@@ -28,7 +28,7 @@ public class AuthController {
 //    public ResponseEntity<?> loginUser(@Valid @RequestBody AuthRequest authRequest) {
 //        System.out.println(authRequest.getUsername()+" "+authRequest.getPassword());
 //        return authService.loginUserService(authRequest);
-//    }
+//    }     
 
 //    @RequestMapping(value = "/login", method = RequestMethod.POST,consumes= MediaType.APPLICATION_JSON_VALUE)
     @PostMapping("/login")

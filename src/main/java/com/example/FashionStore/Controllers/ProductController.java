@@ -22,7 +22,6 @@ public class ProductController {
     }
 
     //users
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping(value = "/productAll")
     public List<Product> getAllProducts() {
         return productService.getAllProducts();

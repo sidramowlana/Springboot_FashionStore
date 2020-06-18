@@ -28,13 +28,14 @@ public class UserService {
     private int jwtExpirationMs;
 
     @Autowired
-    public UserService(UserRepository userRepository, RoleService roleService,PasswordEncoder passwordEncoder,
+    public UserService(UserRepository userRepository, RoleService roleService, PasswordEncoder passwordEncoder,
                        JavaMailSender javaMailSender) {
         this.userRepository = userRepository;
         this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
         this.javaMailSender = javaMailSender;
     }
+
     public ResponseEntity<?> getUserByUserId(Integer userId) {
         if (userRepository.existsById(userId)) {
             Optional<User> user = userRepository.findById(userId);
@@ -51,14 +52,27 @@ public class UserService {
         return ResponseEntity.badRequest().body(new MessageResponse("User email not available!!!"));
     }
 
+    public ResponseEntity<?> updateUserPasswordByUserId(Integer userId, String newPassword) {
+        if (userRepository.existsById(userId)) {
+            User user = userRepository.findById(userId).get();
+            user.setPassword(newPassword);
+            userRepository.save(user);
+            return ResponseEntity.ok(user);
+        }else {
+            return ResponseEntity.badRequest().body(new MessageResponse("User not available!"));
+        }
+
+    }
+
     public User getUserByUserName(String username) {
         return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username Not Found with username: " + username));
     }
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    public  ResponseEntity<?> updateUserById(Integer userId, User newUser){
+    public ResponseEntity<?> updateUserById(Integer userId, User newUser) {
         if (userRepository.existsById(userId)) {
             User user = userRepository.findById(userId).get();
             user.setUsername(newUser.getUsername());

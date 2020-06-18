@@ -38,4 +38,10 @@ public class UserController {
     public ResponseEntity<?> updateUserProfileById(@PathVariable Integer userId, @RequestBody User newUser) {
         return userService.updateUserById(userId, newUser);
     }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @RequestMapping(value = "/updatePassword/{userId}", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateUserPasswordByUserId(@PathVariable Integer userId, @RequestBody String  newPassword) {
+        return userService.updateUserPasswordByUserId(userId, newPassword);
+    }
 }
