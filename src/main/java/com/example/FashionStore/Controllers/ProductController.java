@@ -27,8 +27,7 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-    @GetMapping(value = "/productAll/{productId}")
+    @GetMapping(value = "/product/{productId}")
     public ResponseEntity<?> getProductByProductId(@PathVariable Integer productId) {
         return productService.getProductById(productId);
     }

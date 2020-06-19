@@ -31,8 +31,9 @@ public class Product {
     @JoinColumn(name = "product", referencedColumnName = "productId")
     private List<ProductTag> productTag;
 
-    @Transient
-    private List<Tag> tagsList;;
+//    @Transient
+//    @Json
+//    private List<Tag> tagsList;;
 
     public Product(String productName, String shortDescription, String longDescription, String category, double price, int quantity, String scaledImage, String fullImage, List<ProductTag> productTag) {
         this.productName = productName;
