@@ -1,6 +1,8 @@
 package com.example.FashionStore.Repositories;
 
 import com.example.FashionStore.Models.Cart;
+import com.example.FashionStore.Models.Product;
+import com.example.FashionStore.Models.User;
 import com.example.FashionStore.Models.Wishlist;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -10,13 +12,16 @@ import java.util.List;
 @Repository
 public interface WishlistRepository extends JpaRepository<Wishlist, Integer> {
 
-    Wishlist findByUser(String userName);
+    List<Wishlist> findByUser(User user);
 
-    Wishlist findByProduct(String productName);
+    Wishlist findByProduct(Product product);
 
-    boolean existsByProduct(String productName);
+    boolean existsByUser(User user);
+
+    boolean existsByProduct(Product product);
+
 
     List<Wishlist> findByUserUserId(Integer userId);
 
-    void deleteByProduct(String productName);
+    void deleteByProduct(Product product);
 }

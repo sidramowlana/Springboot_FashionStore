@@ -5,6 +5,7 @@ import com.example.FashionStore.Models.Product;
 import com.example.FashionStore.Models.Wishlist;
 import com.example.FashionStore.Request.AuthRequest;
 import com.example.FashionStore.Services.WishlistService;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -23,22 +24,22 @@ public class WishlistController {
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping(value = "/add-wishlist/{productId}")
-    public ResponseEntity<?> addWishlist(@PathVariable Integer productId, @RequestBody Wishlist newWishlist, HttpServletRequest request) {
-        System.out.println(productId);
-        return wishlistService.addNewWishlistItem(productId, newWishlist, request);
+    public ResponseEntity<?> addWishlist(@PathVariable Integer productId, HttpServletRequest request) {
+        System.out.println("add wishlist: " + productId + " = " + request.getUserPrincipal().getName());
+        return wishlistService.onWishlistItem(productId, request);
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-    @GetMapping(value = "/wishlistAll/")
+    @GetMapping(value = "/wishlistAll")
     public List<Wishlist> getAllWishlistItemByProductId(HttpServletRequest httpServletRequest) {
-        return wishlistService.getAllWishlistItems(httpServletRequest);
+        System.out.println("http: " + httpServletRequest.getUserPrincipal().getName());
+        return wishlistService.getAllWishlistItemsByUserToken(httpServletRequest);
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-    @RequestMapping(value = "/Wishlist/{WishlistId}", method = RequestMethod.DELETE)
-    public void deleteWishlistItemByUserId(@PathVariable Integer WishlistId) {
-        wishlistService.deleteWishlistItem(WishlistId);
+    @GetMapping(value = "/product/{productId}")
+    public ResponseEntity<?> getWishlistProduct(@PathVariable Integer productId, HttpServletRequest request) {
+        return wishlistService.getWishlistProduct(productId, request);
     }
-
 
 }

@@ -13,11 +13,25 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
 
     Cart findByUser(String userName);
 
-    Cart findByProduct(String productName);
+    Cart findByProduct(Product product);
 
-    boolean existsByProduct(String productName);
+    Cart findByProductProductId(Integer productId);
+    Cart findByProductProductIdAndSizeAndUserUserId(Integer productId,String size, Integer userId);
 
-    List<Cart> findByUserUserId(Integer userId);
+    boolean existsByProduct(Product product);
+
+    boolean existsByProductAndSize(Product product, String size);
+
+    boolean existsByProductProductIdAndUserUserId(Integer productId, Integer userId);
+    boolean existsByProductProductIdAndSizeAndUserUserId(Integer productId,String size, Integer userId);
+
+    Cart findByProductAndSize(Product product, String size);
+
+    boolean existsByProductProductId(Integer productId);
+
+    boolean existsByUserUserId(Integer userId);
+
+    List<Cart> findByUser(User user);
 
     void deleteByProduct(String productName);
 }

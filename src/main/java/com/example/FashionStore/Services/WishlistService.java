@@ -27,27 +27,42 @@ public class WishlistService {
         this.userRepository = userRepository;
     }
 
-    public ResponseEntity<?> addNewWishlistItem(Integer productId, Wishlist newWishlistItem, HttpServletRequest request) {
+    public ResponseEntity<?> onWishlistItem(Integer productId, HttpServletRequest request) {
         Product product = productRepository.findById(productId).get();
         User user = userRepository.findByUsername(request.getUserPrincipal().getName()).get();
-        Wishlist wishlist = new Wishlist();
-        newWishlistItem.setProduct(product);
-        newWishlistItem.setUser(user);
-        wishlistRepository.save(wishlist);
-        return ResponseEntity.ok().body("");
-    }
-
-
-    public void deleteWishlistItem(Integer id) {
-        if (wishlistRepository.existsById(id)) {
-            Wishlist wishlist = wishlistRepository.findById(id).get();
+        if (wishlistRepository.existsByProduct(product) && wishlistRepository.existsByUser(user)) {
+            System.out.println("It is favourited so now gonna remove");
+            Wishlist wishlist = wishlistRepository.findByProduct(product);
             wishlistRepository.delete(wishlist);
+            return ResponseEntity.ok().body("Removed from your wishlist");
+        } else {
+            System.out.println("it is not favourited so gonna favourite now");
+            Wishlist wishlist = new Wishlist();
+            wishlist.setProduct(product);
+            wishlist.setUser(user);
+//            wishlist.setFavourite(true);
+            wishlistRepository.save(wishlist);
+            return ResponseEntity.ok().body("Added to your wishlist");
+
         }
     }
 
-    public List<Wishlist> getAllWishlistItems(HttpServletRequest request) {
+    public List<Wishlist> getAllWishlistItemsByUserToken(HttpServletRequest request) {
         User user = userRepository.findByUsername(request.getUserPrincipal().getName()).get();
-        List<Wishlist> wishlist = wishlistRepository.findByUserUserId(user.getUserId());
+        List<Wishlist> wishlist = wishlistRepository.findByUser(user);
         return wishlist;
     }
+
+    public ResponseEntity<?> getWishlistProduct(Integer productId, HttpServletRequest request) {
+        User user = userRepository.findByUsername(request.getUserPrincipal().getName()).get();
+        Product product = productRepository.findById(productId).get();
+        if (wishlistRepository.existsByProduct(product) && wishlistRepository.existsByUser(user)) {
+            Wishlist wishlist = wishlistRepository.findByProduct(product);
+            return ResponseEntity.ok().body(wishlist);
+        } else {
+            return ResponseEntity.ok().body("No favourites product");
+        }
+    }
+
+
 }

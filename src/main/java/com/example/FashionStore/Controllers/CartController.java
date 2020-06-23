@@ -20,32 +20,27 @@ public class CartController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-    @PostMapping(value = "/createCart/{userId}")
-    public ResponseEntity<?> addCart(@PathVariable Integer userId, @RequestBody Cart newCart) {
-        System.out.println(userId);
-        return cartService.addNewCartItem(userId, newCart);
+    @PostMapping(value = "/add-cart/{productId}")
+    public ResponseEntity<?> addCart(@PathVariable Integer productId,@RequestParam Integer quantity,@RequestParam String size,@RequestParam Double total, HttpServletRequest request) {
+        System.out.println(productId);
+        return cartService.addNewCartItem(productId,quantity,size,total, request);
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-    @GetMapping(value = "/cartAll/{userId}")
-    public List<Cart> getAllCartItemByUserId(@PathVariable Integer userId) {
-        return cartService.getAllCartItems(userId);
+    @GetMapping(value = "/cartAll")
+    public List<Cart> getAllCartItemByUserId(HttpServletRequest request) {
+        return cartService.getAllCartItems(request);
     }
 
-//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-//    @GetMapping(value = "/cartAll/cart/{cartId}")
-//    public Cart getAllCartItemByCartId(@PathVariable Integer cartId) {
-//        return cartService.getCartByCartId(cartId);
-//    }
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PostMapping(value = "/delete-cart/{productId}")
+    public List<Cart> getAllCartItemByCartId(@PathVariable Integer productId,@RequestParam String size, HttpServletRequest request) {
+       return cartService.deleteCartProductByProductId(productId,size,request);
+    }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-    @RequestMapping(value = "/cart/{userId}", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateCartItemByUserId(@PathVariable Integer userId, @RequestBody Cart cart) {
-        return cartService.updateCartItem(userId,cart);
+    @RequestMapping(value = "/cart-update/product/{productId}", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateCartItemByUserId(@PathVariable Integer productId, @RequestBody Cart cart) {
+        return cartService.updateCartItem(productId,cart);
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-    @RequestMapping(value = "/cart/{cartId}", method = RequestMethod.DELETE)
-    public void deleteCartItemByUserId(@PathVariable Integer cartId) {
-        cartService.deleteCartItem(cartId);
-    }
-}
+  }
