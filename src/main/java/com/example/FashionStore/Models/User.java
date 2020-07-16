@@ -18,7 +18,6 @@ public class User {
 
     private String username;
     private String email;
-    private String address;
     private String phone;
     private String password;
 
@@ -26,11 +25,17 @@ public class User {
     @JoinColumn(name = "role", referencedColumnName = "roleId")
     private Role role;
 
-    public User(String username, String email, String address, String phone, String password) {
+    public User(String username, String email, String phone, String password) {
         this.username = username;
         this.email = email;
-        this.address = address;
         this.phone = phone;
         this.password = password;
     }
+//    public User(String username, String email, String address, String phone, String password) {
+//        this.username = username;
+//        this.email = email;
+//        this.address = address;
+//        this.phone = phone;
+//        this.password = password;
+//    }
 }

@@ -1,56 +1,37 @@
 package com.example.FashionStore.Models;
 
-public class Orders  {
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Orders {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer ordersId;
     private String date;
     private String status;
-    private User user;
+
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user", referencedColumnName = "userId")
+     private User user;
+
+    @JsonIgnore
+    @Transient
+    private String userId;
     private double total;
 
-    public Orders() {
-    }
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "orders", referencedColumnName = "ordersId")
+    private List<Cart> cartList;
 
-//    public Orders(User user) {
-//        this.user = user;
-//        this.orderStatus = "Pending";
-//    }
-
-
-    public Orders(String date, String status, User user, double total) {
-        this.date = date;
-        this.status = status;
-        this.user = user;
-        this.total = total;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public double getTotal() {
-        return total;
-    }
-
-    public void setTotal(double total) {
-        this.total = total;
-    }
 }
+

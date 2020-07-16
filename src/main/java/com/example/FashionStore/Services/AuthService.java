@@ -52,7 +52,6 @@ public class AuthService {
         User user = new User(
                 registerUser.getUsername(),
                 registerUser.getEmail(),
-                registerUser.getAddress(),
                 registerUser.getPhone(),
                 passwordEncoder.encode(registerUser.getPassword()));
 
@@ -67,6 +66,7 @@ public class AuthService {
             System.out.println("User name doesn't exist");
             return ResponseEntity.ok("User name doesn't exist");
         }
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
 

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CartService {
@@ -26,11 +27,11 @@ public class CartService {
         this.productRepository = productRepository;
     }
 
-    public ResponseEntity<?> addNewCartItem(Integer productId,Integer quantity, String size, Double total,HttpServletRequest request) {
+    public ResponseEntity<?> addNewCartItem(Integer productId, Integer quantity, String size, Double total, HttpServletRequest request) {
         User user = userRepository.findByUsername(request.getUserPrincipal().getName()).get();
         Product product = productRepository.findById(productId).get();
-            if (cartRepository.existsByProductAndSize(product,size)) {
-            Cart cart = cartRepository.findByProductAndSize(product,size);
+        if (cartRepository.existsByProductAndSizeAndIsPurchased(product, size, false)) {
+            Cart cart = cartRepository.findByProductAndSize(product, size);
             cart.setQuantity(cart.getQuantity() + quantity);
             cart.setTotal(total);
             cartRepository.save(cart);
@@ -48,23 +49,25 @@ public class CartService {
     }
 
 
-    public List<Cart> deleteCartProductByProductId(Integer productId,String size,HttpServletRequest request) {
+    public List<Cart> deleteCartProductByProductId(Integer productId, String size, HttpServletRequest request) {
         User user = userRepository.findByUsername(request.getUserPrincipal().getName()).get();
-        System.out.println(productId+" = "+user.getUserId()+" = "+size);
-        if (cartRepository.existsByProductProductIdAndSizeAndUserUserId(productId, size,user.getUserId())) {
-            Cart cart = cartRepository.findByProductProductIdAndSizeAndUserUserId(productId,size,user.getUserId());
+        System.out.println(productId + " = " + user.getUserId() + " = " + size);
+        if (cartRepository.existsByProductProductIdAndSizeAndUserUserId(productId, size, user.getUserId())) {
+            Cart cart = cartRepository.findByProductProductIdAndSizeAndUserUserId(productId, size, user.getUserId());
             cartRepository.delete(cart);
             return getAllCartItems(request);
-        }else {
+        } else {
             System.out.println("not going check this");
             return null;
         }
-       }
+    }
 
-    public ResponseEntity<?> updateCartItem(Integer cartId, Cart updateCartItem) {
+    public ResponseEntity<?> updateCartItem(Integer cartId, int quantity) {
         if (cartRepository.existsById(cartId)) {
             Cart cart = cartRepository.findById(cartId).get();
-            cart.setQuantity(updateCartItem.getQuantity());
+            double price = cart.getProduct().getPrice() * quantity;
+            cart.setQuantity(quantity);
+            cart.setTotal(price);
             cartRepository.save(cart);
             return ResponseEntity.ok().body("");
         }
@@ -73,9 +76,17 @@ public class CartService {
 
     public List<Cart> getAllCartItems(HttpServletRequest request) {
         User user = userRepository.findByUsername(request.getUserPrincipal().getName()).get();
-        List<Cart> cartList = cartRepository.findByUser(user);
+        List<Cart> cartList = cartRepository.findByUserAndIsPurchased(user, false);
         return cartList;
     }
+
+    public List<Cart> getAllPendingCartProducts(Integer userId, boolean isPurchased, HttpServletRequest request) {
+        User user = userRepository.findById(userId).get();
+        List<Cart> pendingCartList = cartRepository.findByUserAndIsPurchased(user, isPurchased);
+        System.out.println("wokring maan");
+        return pendingCartList;
+    }
+
 //    public Cart getCartByCartId(Integer cartId) {
 //        Cart cart = cartRepository.findById(cartId).get();
 //        return cart;

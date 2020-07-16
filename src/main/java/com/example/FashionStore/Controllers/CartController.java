@@ -3,6 +3,7 @@ package com.example.FashionStore.Controllers;
 
 import com.example.FashionStore.Models.Cart;
 import com.example.FashionStore.Services.CartService;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -39,8 +40,17 @@ public class CartController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-    @RequestMapping(value = "/cart-update/product/{productId}", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateCartItemByUserId(@PathVariable Integer productId, @RequestBody Cart cart) {
-        return cartService.updateCartItem(productId,cart);
+    @RequestMapping(value = "/update-cart/{cartId}", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateCartItemByUserId(@PathVariable Integer cartId, @RequestParam Integer quantity) {
+        return cartService.updateCartItem(cartId,quantity);
     }
-  }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @GetMapping(value = "/cartAll/{userId}")
+    public List<Cart> getAllUserIsPurchaseCartProducts(@PathVariable Integer userId, @RequestParam boolean isPurchased, HttpServletRequest request) {
+        System.out.println("q11: "+userId);
+        System.out.println("q12: "+isPurchased);
+        return cartService.getAllPendingCartProducts(userId,isPurchased,request);
+    }
+
+}
