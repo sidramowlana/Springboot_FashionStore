@@ -1,6 +1,5 @@
 package com.example.FashionStore.Models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.List;
 
+@Table(name = "orders")
 @Entity
 @Data
 @NoArgsConstructor
@@ -22,16 +22,12 @@ public class Orders {
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "user", referencedColumnName = "userId")
-     private User user;
-
-    @JsonIgnore
-    @Transient
-    private String userId;
+    private User user;
     private double total;
 
-    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinColumn(name = "orders", referencedColumnName = "ordersId")
-    private List<Cart> cartList;
+//    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+//    @JoinColumn(name = "orders", referencedColumnName = "ordersId")
+//    private List<CartOrders> cartOrdersList;
 
 }
 

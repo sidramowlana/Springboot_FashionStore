@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.List;
 
+@Table(name = "cart")
 @Entity
 @Data
 @NoArgsConstructor
@@ -24,6 +25,10 @@ public class Cart {
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "product", referencedColumnName = "productId")
     private Product product;
+
+//    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+//    @JoinColumn(name = "cart", referencedColumnName = "cartId")
+//    private List<CartOrders> cartOrdersList;
 
     private int quantity;
     private String size;

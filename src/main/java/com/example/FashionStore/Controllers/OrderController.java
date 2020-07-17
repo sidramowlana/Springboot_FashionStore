@@ -1,6 +1,7 @@
 package com.example.FashionStore.Controllers;
 
 import com.example.FashionStore.Models.Cart;
+import com.example.FashionStore.Models.CartOrders;
 import com.example.FashionStore.Models.Orders;
 import com.example.FashionStore.Response.MessageResponse;
 import com.example.FashionStore.Services.AuthService;
@@ -24,24 +25,35 @@ public class OrderController {
         this.ordersService = ordersService;
     }
 
-
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-    @PostMapping(value = "/add-order")
-    public ResponseEntity<MessageResponse> addUserOrders(@RequestBody Orders newOrders, HttpServletRequest request) {
-        System.out.println("cartorders: "+newOrders);
-        return ordersService.addUserCartOrders(newOrders,request);
+    @PostMapping(value = "/cart/add-order")
+    public ResponseEntity<MessageResponse> addCartOrders(@RequestBody CartOrders newOrders, HttpServletRequest request) {
+        return ordersService.addCartOrders(newOrders, request);
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PostMapping(value = "/orders/add-order")
+    public ResponseEntity<Orders> addOrder(@RequestBody Orders orders, HttpServletRequest request) {
+        return ordersService.addOrder(orders, request);
+    }
+
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping(value = "/status/{orderStatus}/user/{userId}")
-    public List<Orders> getAllUserOrders(@PathVariable Integer userId,@PathVariable String orderStatus, HttpServletRequest request){
-        return ordersService.getAllUserOrders(userId,orderStatus,request);
+    public List<Orders> getAllUserOrders(@PathVariable Integer userId, @PathVariable String orderStatus, HttpServletRequest request) {
+        return ordersService.getAllUserOrders(userId, orderStatus, request);
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping(value = "/cart/{ordersId}")
-    public List<Cart> getAllCartByOrderId(@PathVariable Integer ordersId, HttpServletRequest request){
-        return ordersService.getAllCartByOrderId(ordersId,request);
+    public List<CartOrders> getAllCartByOrderId(@PathVariable Integer ordersId, HttpServletRequest request) {
+        return ordersService.getAllCartByOrderId(ordersId);
+    }
+
+   @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PutMapping(value = "/order-update/{cartOrdersId}")
+    public  ResponseEntity<CartOrders> updateOrderStatus(@PathVariable Integer cartOrdersId,@RequestBody CartOrders updateCartOrders, HttpServletRequest request) {
+        return ordersService.updateOrderStatus(cartOrdersId,updateCartOrders);
     }
 
 }
