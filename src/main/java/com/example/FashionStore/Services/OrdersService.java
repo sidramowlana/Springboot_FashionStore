@@ -42,14 +42,19 @@ public class OrdersService {
         return cartList;
     }
 
-    public ResponseEntity<Orders> addOrder(Orders newOorder, HttpServletRequest request) {
+    public List<CartOrders> getAllCartOrdersByUserId(Integer userId,HttpServletRequest request) {
+        List<CartOrders> cartOrdersList = cartOrdersRepository.findByOrdersUserUserId(userId);
+        return cartOrdersList;
+    }
+
+    public ResponseEntity<Orders> addOrder(Orders newOrder, HttpServletRequest request) {
         String userName = request.getUserPrincipal().getName();
         User user = userRepository.findByUsername(userName).get();
         Orders orders = new Orders();
         orders.setUser(user);
-        orders.setTotal(newOorder.getTotal());
-        orders.setStatus(newOorder.getStatus());
-        orders.setDate(newOorder.getDate());
+        orders.setTotal(newOrder.getTotal());
+        orders.setStatus(newOrder.getStatus());
+        orders.setDate(newOrder.getDate());
         ordersRepository.save(orders);
         return ResponseEntity.ok().body(orders);
     }
