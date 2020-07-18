@@ -26,10 +26,6 @@ public class Cart {
     @JoinColumn(name = "product", referencedColumnName = "productId")
     private Product product;
 
-//    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-//    @JoinColumn(name = "cart", referencedColumnName = "cartId")
-//    private List<CartOrders> cartOrdersList;
-
     private int quantity;
     private String size;
     private double total;

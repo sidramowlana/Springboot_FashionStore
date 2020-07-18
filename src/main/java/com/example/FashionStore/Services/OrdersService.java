@@ -3,13 +3,11 @@ package com.example.FashionStore.Services;
 import com.example.FashionStore.Models.*;
 import com.example.FashionStore.Repositories.*;
 import com.example.FashionStore.Response.MessageResponse;
-import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
