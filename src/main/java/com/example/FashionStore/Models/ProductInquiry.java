@@ -1,61 +1,32 @@
 package com.example.FashionStore.Models;
 
-import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public class ProductInquiry  {
+import javax.persistence.*;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+public class ProductInquiry {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer ProductInquiryId;
+
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user", referencedColumnName = "userId")
     private User user;
     private String question;
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @JoinColumn(name = "product", referencedColumnName = "productId")
     private Product product;
-    private Date date = new Date();
-//    private Answers answers;
+    private String date;
+    private String answers;
 
-    public ProductInquiry() {
-    }
-
-    public ProductInquiry(User user, String question, Product product, Date date) {
-        this.user = user;
+    public ProductInquiry(String question, String date) {
         this.question = question;
-        this.product = product;
         this.date = date;
     }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(String question) {
-        this.question = question;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-//    public Answers getAnswers() {
-//        return answers;
-//    }
-//
-//    public void setAnswers(Answers answers) {
-//        this.answers = answers;
-//    }
 }

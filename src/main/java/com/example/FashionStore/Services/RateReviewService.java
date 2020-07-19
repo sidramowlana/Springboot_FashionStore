@@ -6,21 +6,18 @@ import com.example.FashionStore.Models.User;
 import com.example.FashionStore.Repositories.*;
 import com.example.FashionStore.Response.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Service
 public class RateReviewService {
 
-    private OrdersRepository ordersRepository;
     private UserRepository userRepository;
     private ProductRepository productRepository;
     private RateReviewRepository rateReviewRepository;
-
-    private CartOrdersRepository cartOrdersRepository;
 
     @Autowired
     public RateReviewService(RateReviewRepository rateReviewRepository, UserRepository userRepository,ProductRepository productRepository) {
@@ -44,5 +41,9 @@ public class RateReviewService {
         } else {
             return ResponseEntity.ok().body(new MessageResponse("Product Not Available"));
         }
+    }
+    public List<RateReview> getRateReviewByProductId(Integer productId, HttpServletRequest request){
+        List<RateReview> rateReviewsList = rateReviewRepository.findByProductProductId(productId);
+        return rateReviewsList;
     }
 }
