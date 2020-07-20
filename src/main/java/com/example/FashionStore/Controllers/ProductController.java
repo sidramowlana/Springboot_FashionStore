@@ -51,6 +51,11 @@ public class ProductController {
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(value = "/updateProduct/{productId}")
     public ResponseEntity<?> updateProduct(@PathVariable Integer productId, @RequestBody Product updateProduct) {
+        System.out.println("zorro: "+productId);
+        System.out.println("zorro: "+updateProduct.getQuantity());
+        System.out.println("zorro: "+updateProduct.getProductName());
+        System.out.println("zorro: "+updateProduct.getPrice());
+        System.out.println("zorro: "+updateProduct.getShortDescription());
         return productService.updateProductByProductId(productId, updateProduct);
     }
 }

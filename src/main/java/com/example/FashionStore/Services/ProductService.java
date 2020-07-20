@@ -25,12 +25,10 @@ public class ProductService {
         Product product = new Product(
                 newProduct.getProductName(),
                 newProduct.getShortDescription(),
-                newProduct.getLongDescription(),
                 newProduct.getCategory(),
                 newProduct.getPrice(),
                 newProduct.getQuantity(),
                 newProduct.getScaledImage(),
-                newProduct.getFullImage(),
                 newProduct.getProductTag()
         );
         productRepository.save(product);
@@ -74,12 +72,8 @@ public class ProductService {
             Product product = productRepository.findById(productId).get();
             product.setProductName(updateProduct.getProductName());
             product.setShortDescription(updateProduct.getShortDescription());
-            product.setLongDescription(updateProduct.getLongDescription());
-            product.setCategory(updateProduct.getCategory());
             product.setPrice(updateProduct.getPrice());
             product.setQuantity(updateProduct.getQuantity());
-            product.setScaledImage(updateProduct.getScaledImage());
-            product.setFullImage(updateProduct.getFullImage());
             productRepository.save(product);
             return ResponseEntity.ok().body(product);
         } else {

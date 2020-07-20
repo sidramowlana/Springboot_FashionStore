@@ -19,12 +19,10 @@ public class Product {
 
     private String productName;
     private String shortDescription;
-    private String longDescription;
     private String category;
     private double price;
     private int quantity;
     private String scaledImage;
-    private String fullImage;
 
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "product", referencedColumnName = "productId")
@@ -34,15 +32,13 @@ public class Product {
 //    @Json
 //    private List<Tag> tagsList;;
 
-    public Product(String productName, String shortDescription, String longDescription, String category, double price, int quantity, String scaledImage, String fullImage, List<ProductTag> productTag) {
+    public Product(String productName, String shortDescription, String category, double price, int quantity, String scaledImage, List<ProductTag> productTag) {
         this.productName = productName;
         this.shortDescription = shortDescription;
-        this.longDescription = longDescription;
         this.category = category;
         this.price = price;
         this.quantity = quantity;
         this.scaledImage = scaledImage;
-        this.fullImage = fullImage;
         this.productTag = productTag;
     }
 }
