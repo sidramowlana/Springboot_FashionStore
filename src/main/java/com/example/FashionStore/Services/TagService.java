@@ -1,6 +1,9 @@
 package com.example.FashionStore.Services;
 
+import com.example.FashionStore.Models.ProductTag;
 import com.example.FashionStore.Models.Tag;
+import com.example.FashionStore.Repositories.ProductRepository;
+import com.example.FashionStore.Repositories.ProductTagRepository;
 import com.example.FashionStore.Repositories.TagRepository;
 import com.example.FashionStore.Response.MessageResponse;
 import org.springframework.http.ResponseEntity;
@@ -12,14 +15,18 @@ import java.util.List;
 public class TagService {
 
     private TagRepository tagRepository;
+    private ProductRepository productRepository;
+    private ProductTagRepository productTagRepository;
 
-    public TagService(TagRepository tagRepository) {
+    public TagService(TagRepository tagRepository, ProductRepository productRepository, ProductTagRepository productTagRepository) {
         this.tagRepository = tagRepository;
+        this.productRepository = productRepository;
+        this.productTagRepository = productTagRepository;
     }
 
     //add new tag
-    public ResponseEntity<?> addNewTag(Tag newTag) {
-        if (tagRepository.existsByTag(newTag.getTag())){
+    public ResponseEntity<MessageResponse> addNewTag(Tag newTag) {
+        if (tagRepository.existsByTag(newTag.getTag())) {
             return ResponseEntity.badRequest().body(new MessageResponse("Tag already exist!!!"));
         }
         Tag tag = new Tag(
@@ -38,26 +45,17 @@ public class TagService {
 
     //get all tags
     public List<Tag> getAllTags() {
-        return tagRepository.findAll();
+        List<Tag> tagsList = tagRepository.findAll();
+        return tagsList;
     }
 
-    //get a tag by name
-    public ResponseEntity<?> getTagByName(String tagName) {
-        if (!tagRepository.existsByTag(tagName)) {
-            return ResponseEntity.ok().body(new MessageResponse("Tag not available!!!"));
-        } else {
-            Tag tag = tagRepository.findByTag(tagName);
-            return ResponseEntity.ok().body(tag);
-        }
+    public List<ProductTag> getAllProductTags() {
+        List<ProductTag> list = productTagRepository.findAll();
+        return list;
     }
-
-    // get equipment by id
-    public ResponseEntity<?> getTagById(Integer id) {
-        if (!tagRepository.existsById(id)) {
-            return ResponseEntity.ok().body(new MessageResponse("Tag not available!!!"));
-        } else {
-            Tag tag = tagRepository.findById(id).get();
-            return ResponseEntity.ok().body(tag);
-        }
+    public List<ProductTag> getAllProductsByTagId(Integer tagId){
+        List<ProductTag> list = productTagRepository.findByTagTagId(tagId);
+        System.out.println(list);
+        return list;
     }
 }

@@ -3,11 +3,13 @@ package com.example.FashionStore.Controllers;
 import com.example.FashionStore.Models.Cart;
 import com.example.FashionStore.Models.Product;
 import com.example.FashionStore.Repositories.ProductRepository;
+import com.example.FashionStore.Response.MessageResponse;
 import com.example.FashionStore.Services.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RequestMapping("api/products")
@@ -21,7 +23,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    //users
+    //users and admin
     @GetMapping(value = "/productAll")
     public List<Product> getAllProducts() {
         return productService.getAllProducts();
@@ -30,14 +32,6 @@ public class ProductController {
     @GetMapping(value = "/product/{productId}")
     public ResponseEntity<?> getProductByProductId(@PathVariable Integer productId) {
         return productService.getProductById(productId);
-    }
-
-    //admin
-//    add product
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping(value = "/createProduct")
-    public ResponseEntity<?> addCart(@RequestBody Product newProduct) {
-        return productService.addNewProduct(newProduct);
     }
 
     //    delete product
@@ -51,11 +45,18 @@ public class ProductController {
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(value = "/updateProduct/{productId}")
     public ResponseEntity<?> updateProduct(@PathVariable Integer productId, @RequestBody Product updateProduct) {
-        System.out.println("zorro: "+productId);
-        System.out.println("zorro: "+updateProduct.getQuantity());
-        System.out.println("zorro: "+updateProduct.getProductName());
-        System.out.println("zorro: "+updateProduct.getPrice());
-        System.out.println("zorro: "+updateProduct.getShortDescription());
         return productService.updateProductByProductId(productId, updateProduct);
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @RequestMapping(value = "/category/product-all/{category}")
+    public List<Product> getProductsByTagId(@PathVariable String category, HttpServletRequest request){
+        return productService.getAllProductByTagName(category);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = "/admin/new-product")
+    public ResponseEntity<MessageResponse> addProduct(@RequestBody Product product, HttpServletRequest request){
+        return productService.addProduct(product);
     }
 }

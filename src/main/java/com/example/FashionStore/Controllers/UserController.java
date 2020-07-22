@@ -2,13 +2,19 @@ package com.example.FashionStore.Controllers;
 
 import com.example.FashionStore.Models.Address;
 import com.example.FashionStore.Models.User;
+import com.example.FashionStore.Response.MessageResponse;
 import com.example.FashionStore.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.servlet.http.HttpServletRequest;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 @RequestMapping("api/users")
 @RestController
@@ -34,16 +40,14 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-    @RequestMapping(value = "/updateUser/{userId}", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateUserProfileById(@PathVariable Integer userId, @RequestBody User newUser) {
-        return userService.updateUserById(userId, newUser);
-    }
-
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-    @RequestMapping(value = "/updatePassword/{userId}", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateUserPasswordByUserId(@PathVariable Integer userId, @RequestBody String  newPassword) {
+    @PutMapping(value = "/reset-password/{userId}")
+    public ResponseEntity<MessageResponse> updateUserPasswordByUserId(@PathVariable Integer userId, @RequestBody String  newPassword) {
         return userService.updateUserPasswordByUserId(userId, newPassword);
     }
+
+
+//    @PUT("api/users/reset-password/{userId}")
+//    Call<User> updateUserPassword(@Path("userId") Integer userId, @Body String newPassword, @Header("Authorization") String token);
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("user/address/{userId}")
@@ -58,5 +62,7 @@ public class UserController {
     {
         return userService.addUserAddressByUserId(newAddress,request);
     }
+
+
 
 }

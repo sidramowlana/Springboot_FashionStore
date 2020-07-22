@@ -1,5 +1,6 @@
 package com.example.FashionStore.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,21 +25,31 @@ public class Product {
     private int quantity;
     private String scaledImage;
 
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @JoinColumn(name = "product", referencedColumnName = "productId")
-    private List<ProductTag> productTag;
+//    @JsonIgnore
+    @Transient
+    String[] catergoryArray;
 
-//    @Transient
-//    @Json
-//    private List<Tag> tagsList;;
 
-    public Product(String productName, String shortDescription, String category, double price, int quantity, String scaledImage, List<ProductTag> productTag) {
+//    @JsonIgnore
+//    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+//    @JoinColumn(name = "product", referencedColumnName = "productId")
+//    private List<ProductTag> productTag;
+
+
+    public Product(String productName, String shortDescription, String category, double price, int quantity, String scaledImage) {
         this.productName = productName;
         this.shortDescription = shortDescription;
         this.category = category;
         this.price = price;
         this.quantity = quantity;
         this.scaledImage = scaledImage;
-        this.productTag = productTag;
+    }
+    public Product(String productName, String shortDescription, double price, int quantity, String scaledImage, String[] catergoryArray) {
+        this.productName = productName;
+        this.shortDescription = shortDescription;
+        this.price = price;
+        this.quantity = quantity;
+        this.scaledImage = scaledImage;
+        this.catergoryArray = catergoryArray;
     }
 }

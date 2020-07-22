@@ -1,37 +1,61 @@
 package com.example.FashionStore.Services;
 
 import com.example.FashionStore.Models.Product;
+import com.example.FashionStore.Models.ProductTag;
+import com.example.FashionStore.Models.Tag;
 import com.example.FashionStore.Repositories.ProductRepository;
+import com.example.FashionStore.Repositories.ProductTagRepository;
+import com.example.FashionStore.Repositories.TagRepository;
 import com.example.FashionStore.Response.MessageResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class ProductService {
 
     private ProductRepository productRepository;
+    private TagRepository tagRepository;
+    private ProductTagRepository productTagRepository;
 
-    public ProductService(ProductRepository productRepository) {
+    @Autowired
+    public ProductService(ProductRepository productRepository, TagRepository tagRepository, ProductTagRepository productTagRepository) {
         this.productRepository = productRepository;
+        this.tagRepository = tagRepository;
+        this.productTagRepository = productTagRepository;
     }
 
     //add new Product
-    public ResponseEntity<?> addNewProduct(Product newProduct) {
+    public ResponseEntity<MessageResponse> addProduct(Product newProduct) {
         if (productRepository.existsByProductName(newProduct.getProductName())) {
             return ResponseEntity.badRequest().body(new MessageResponse("Product already exist!!!"));
         }
-        Product product = new Product(
-                newProduct.getProductName(),
-                newProduct.getShortDescription(),
-                newProduct.getCategory(),
-                newProduct.getPrice(),
-                newProduct.getQuantity(),
-                newProduct.getScaledImage(),
-                newProduct.getProductTag()
-        );
+        Product product = new Product();
+        product.setProductName(newProduct.getProductName());
+        product.setShortDescription(newProduct.getShortDescription());
+        product.setPrice(newProduct.getPrice());
+        product.setQuantity(newProduct.getQuantity());
+        product.setScaledImage(newProduct.getScaledImage());
+        String catergoryArray[] = newProduct.getCatergoryArray();
+        System.out.println(Arrays.toString(newProduct.getCatergoryArray()));
+        System.out.println(catergoryArray);
+        for (int j = 0; j < catergoryArray.length; j++) {
+            if (catergoryArray[j].equals("Men") || catergoryArray[j].equals("Women") || catergoryArray[j].equals("Kids")) {
+                product.setCategory(catergoryArray[j]);
+            }
+        }
         productRepository.save(product);
+
+        for (int i = 0; i < catergoryArray.length; i++) {
+            Tag tag = tagRepository.findByTag(catergoryArray[i]);
+            ProductTag productTag = new ProductTag();
+            productTag.setProduct(product);
+            productTag.setTag(tag);
+            productTagRepository.save(productTag);
+        }
         return ResponseEntity.ok().body(new MessageResponse("Successfully Product Added"));
     }
 
@@ -79,5 +103,11 @@ public class ProductService {
         } else {
             return ResponseEntity.ok().body("Product not available");
         }
+    }
+
+    public List<Product> getAllProductByTagName(String tagName) {
+        List<Product> productList = productRepository.findByCategory(tagName);
+        System.out.println("productList: " + productList);
+        return productList;
     }
 }

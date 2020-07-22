@@ -20,7 +20,7 @@ public interface WishlistRepository extends JpaRepository<Wishlist, Integer> {
 
     boolean existsByProduct(Product product);
 
-
     List<Wishlist> findByUserUserId(Integer userId);
 
+    Wishlist findByProductAndUser(Product product, User user);
 }

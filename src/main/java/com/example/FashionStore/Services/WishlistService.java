@@ -29,11 +29,14 @@ public class WishlistService {
 
     public ResponseEntity<?> onWishlistItem(Integer productId, HttpServletRequest request) {
         Product product = productRepository.findById(productId).get();
+        System.out.println(product);
         User user = userRepository.findByUsername(request.getUserPrincipal().getName()).get();
+        System.out.println(user);
         if (wishlistRepository.existsByProduct(product) && wishlistRepository.existsByUser(user)) {
             System.out.println("It is favourited so now gonna remove");
-            Wishlist wishlist = wishlistRepository.findByProduct(product);
-            wishlistRepository.delete(wishlist);
+            Wishlist deleteWishlist = wishlistRepository.findByProductAndUser(product,user);
+            System.out.println(deleteWishlist);
+            wishlistRepository.delete(deleteWishlist);
             return ResponseEntity.ok().body("Removed from your wishlist");
         } else {
             System.out.println("it is not favourited so gonna favourite now");

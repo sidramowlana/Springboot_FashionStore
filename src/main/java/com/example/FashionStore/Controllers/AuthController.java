@@ -21,14 +21,11 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody User registerUser) {
-
-        System.out.println(registerUser.getUsername());
-      return authService.registerUserService(registerUser);
+        return authService.registerUserService(registerUser);
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@Valid @RequestBody AuthRequest authRequest) {
-        System.out.println(authRequest.getUsername()+" "+authRequest.getPassword());
         return authService.loginUserService(authRequest);
     }
 }

@@ -31,6 +31,8 @@ public class AuthService {
     private PasswordEncoder passwordEncoder;
     private JwtUtils jwtUtils;
 
+
+
     @Autowired
     public AuthService(RoleService roleService, UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JwtUtils jwtUtils) {
         this.roleService = roleService;
@@ -38,6 +40,7 @@ public class AuthService {
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtils = jwtUtils;
+
     }
 
     public ResponseEntity<?> registerUserService(User registerUser) {
@@ -53,7 +56,8 @@ public class AuthService {
                 registerUser.getUsername(),
                 registerUser.getEmail(),
                 registerUser.getPhone(),
-                passwordEncoder.encode(registerUser.getPassword()));
+                passwordEncoder.encode(registerUser.getPassword())
+        );
 
         Role role = roleService.getRoleByName("ROLE_USER");
         user.setRole(role);
@@ -62,11 +66,15 @@ public class AuthService {
     }
 
     public ResponseEntity<?> loginUserService(AuthRequest authRequest) {
+        System.out.println("with profile");
+        System.out.println(authRequest.getUsername());
         if (!userRepository.existsByUsername(authRequest.getUsername())) {
-            System.out.println("User name doesn't exist");
+            System.out.println("User name "+authRequest.getUsername()+" doesn't exist");
             return ResponseEntity.ok("User name doesn't exist");
         }
-
+        System.out.println("ddddddddddddddddddddd");
+        System.out.println(authRequest.getUsername());
+        System.out.println(authRequest.getPassword());
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
 
@@ -78,11 +86,6 @@ public class AuthService {
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
-        System.out.println(new JwtResponse(jwt,
-                userDetails.getId(),
-                userDetails.getUsername(),
-                userDetails.getEmail(),
-                roles.get(0), expiretime));
 
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
