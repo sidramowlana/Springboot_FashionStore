@@ -34,13 +34,18 @@ public class OrdersService {
         return ordersList;
     }
 
+    public List<Orders> getAllPendingOrdersByStatus(String status) {
+        List<Orders> ordersList = ordersRepository.findByStatus(status);
+        return ordersList;
+    }
+
     public List<CartOrders> getAllCartByOrderId(Integer ordersId) {
         Orders orders = ordersRepository.findById(ordersId).get();
         List<CartOrders> cartList = cartOrdersRepository.findByOrders(orders);
         return cartList;
     }
 
-    public List<CartOrders> getAllCartOrdersByUserId(Integer userId,HttpServletRequest request) {
+    public List<CartOrders> getAllCartOrdersByUserId(Integer userId, HttpServletRequest request) {
         List<CartOrders> cartOrdersList = cartOrdersRepository.findByOrdersUserUserId(userId);
         return cartOrdersList;
     }

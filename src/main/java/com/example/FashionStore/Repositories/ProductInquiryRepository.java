@@ -10,4 +10,5 @@ import java.util.List;
 public interface ProductInquiryRepository extends JpaRepository<ProductInquiry, Integer> {
     List<ProductInquiry> findByProductProductId(Integer productId);
 
+    List<ProductInquiry> findByIsReplied(boolean isAnswered);
 }

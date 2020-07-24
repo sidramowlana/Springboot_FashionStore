@@ -24,9 +24,6 @@ public class ProductInquiry {
     private Product product;
     private String date;
     private String answers;
+    private boolean isReplied;
 
-    public ProductInquiry(String question, String date) {
-        this.question = question;
-        this.date = date;
-    }
 }

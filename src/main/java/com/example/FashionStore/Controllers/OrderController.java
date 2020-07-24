@@ -61,4 +61,10 @@ public class OrderController {
     public List<CartOrders> getAllCartOrdersByUserId(@PathVariable Integer userId, HttpServletRequest request) {
         return ordersService.getAllCartOrdersByUserId(userId,request);
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/all/{status}")
+    public List<Orders> getAllPendingOrdersByStatus(@PathVariable String status, HttpServletRequest request) {
+        return ordersService.getAllPendingOrdersByStatus(status);
+    }
 }

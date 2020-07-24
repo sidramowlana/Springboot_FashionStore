@@ -1,7 +1,9 @@
 package com.example.FashionStore.Controllers;
 
 import com.example.FashionStore.Models.ProductInquiry;
+import com.example.FashionStore.Response.MessageResponse;
 import com.example.FashionStore.Services.ProductInquiryService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +19,7 @@ public class ProductInquiryController {
         this.productInquiryService = productInquiryService;
     }
 
+    //user asking for question
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping("/product/{productId}")
     public List<ProductInquiry> onAddProductInquiryByProductId(@PathVariable Integer productId, @RequestBody ProductInquiry productInquiry, HttpServletRequest request) {
@@ -25,7 +28,22 @@ public class ProductInquiryController {
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/product-all/{productId}")
-    public List<ProductInquiry> onGetAllProductInquiry(@PathVariable Integer productId, HttpServletRequest request) {
-        return productInquiryService.onGetAllProductInquiry(productId);
+    public List<ProductInquiry> onGetAllProductInquiryByProductId(@PathVariable Integer productId, HttpServletRequest request) {
+        System.out.println("here: "+productInquiryService.onGetAllProductInquiryByProductId(productId));
+        return productInquiryService.onGetAllProductInquiryByProductId(productId);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/answered/{isAnswered}")
+    public List<ProductInquiry> onGetAllProductInquiryAnswered(@PathVariable boolean isAnswered, HttpServletRequest request) {
+        return productInquiryService.onGetAllProductInquiryAnswered(isAnswered);
+    }
+
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/product-answer/{productInquiryId}")
+    public ResponseEntity<MessageResponse> onAddAnswerByProductInquiryId(@PathVariable Integer productInquiryId,
+                                                                         @RequestBody ProductInquiry productInquiry, HttpServletRequest request) {
+        return productInquiryService.onAddAnswerByProductInquiryId(productInquiryId,productInquiry);
     }
 }
