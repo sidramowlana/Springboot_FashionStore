@@ -1,11 +1,8 @@
 package com.example.FashionStore.Controllers;
 
-
-import com.example.FashionStore.Models.Product;
 import com.example.FashionStore.Models.Wishlist;
-import com.example.FashionStore.Request.AuthRequest;
+import com.example.FashionStore.Response.MessageResponse;
 import com.example.FashionStore.Services.WishlistService;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("api/wishlist")
 @RestController
 public class WishlistController {
@@ -24,11 +22,13 @@ public class WishlistController {
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping(value = "/add-wishlist/{productId}")
-    public ResponseEntity<?> addWishlist(@PathVariable Integer productId, HttpServletRequest request) {
+    public ResponseEntity<MessageResponse> addWishlist(@PathVariable Integer productId, HttpServletRequest request) {
         System.out.println("add wishlist: " + productId + " = " + request.getUserPrincipal().getName());
         return wishlistService.onWishlistItem(productId, request);
     }
 
+
+//wishlist page displaying all favorutie product of a user
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping(value = "/wishlistAll")
     public List<Wishlist> getAllWishlistItemByProductId(HttpServletRequest httpServletRequest) {

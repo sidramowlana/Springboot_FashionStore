@@ -34,7 +34,7 @@ public class CartService {
             cart.setQuantity(cart.getQuantity() + quantity);
             cart.setTotal(total);
             cartRepository.save(cart);
-            return ResponseEntity.ok().body("Added to the existing product");
+            return ResponseEntity.ok().body(new MessageResponse("Added to the existing product"));
         } else {
             Cart cart = new Cart();
             cart.setProduct(product);
@@ -43,7 +43,7 @@ public class CartService {
             cart.setTotal(total);
             cart.setSize(size);
             cartRepository.save(cart);
-            return ResponseEntity.ok().body("");
+            return ResponseEntity.ok().body(new MessageResponse("Added to your cart"));
         }
     }
 

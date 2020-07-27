@@ -54,16 +54,19 @@ public class ProductInquiryService {
     }
 
     public ResponseEntity<MessageResponse> onAddAnswerByProductInquiryId(Integer productInquiryId, ProductInquiry answerProductInquiry) {
-        if(productInquiryRepository.existsById(productInquiryId)){
+        if (productInquiryRepository.existsById(productInquiryId)) {
             ProductInquiry productInquiry = productInquiryRepository.findById(productInquiryId).get();
             productInquiry.setAnswers(answerProductInquiry.getAnswers());
             productInquiry.setReplied(true);
             productInquiryRepository.save(productInquiry);
             return ResponseEntity.ok().body(new MessageResponse("Successfully Replied to the inquiry"));
-        }
-        else
-        {
+        } else {
             return ResponseEntity.badRequest().body(new MessageResponse("Inquiry is not available Tag Added"));
         }
+    }
+
+    public ProductInquiry onGetInquiryById(Integer productInquiryId) {
+        ProductInquiry productInquiry = productInquiryRepository.findById(productInquiryId).get();
+        return productInquiry;
     }
 }

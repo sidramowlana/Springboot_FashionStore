@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("api/products")
 @RestController
 public class ProductController {
@@ -57,6 +57,7 @@ public class ProductController {
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/admin/new-product")
     public ResponseEntity<MessageResponse> addProduct(@RequestBody Product product, HttpServletRequest request){
+        System.out.println(product);
         return productService.addProduct(product);
     }
 }

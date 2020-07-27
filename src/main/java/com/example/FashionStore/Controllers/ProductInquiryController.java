@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 
 @RequestMapping("api/inquiry")
 @RestController
@@ -39,6 +40,12 @@ public class ProductInquiryController {
         return productInquiryService.onGetAllProductInquiryAnswered(isAnswered);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/product/{inquiryId}")
+    public ProductInquiry onGetInquiryById(@PathVariable Integer inquiryId, HttpServletRequest request) {
+        return productInquiryService.onGetInquiryById(inquiryId);
+    }
+
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/product-answer/{productInquiryId}")
@@ -46,4 +53,5 @@ public class ProductInquiryController {
                                                                          @RequestBody ProductInquiry productInquiry, HttpServletRequest request) {
         return productInquiryService.onAddAnswerByProductInquiryId(productInquiryId,productInquiry);
     }
+
 }

@@ -6,6 +6,7 @@ import com.example.FashionStore.Repositories.ProductRepository;
 import com.example.FashionStore.Repositories.ProductTagRepository;
 import com.example.FashionStore.Repositories.TagRepository;
 import com.example.FashionStore.Response.MessageResponse;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +46,8 @@ public class TagService {
 
     //get all tags
     public List<Tag> getAllTags() {
-        List<Tag> tagsList = tagRepository.findAll();
+//        List<Tag> tagsList = tagRepository.findAll();
+        List<Tag> tagsList = tagRepository.findAllByOrderByTagIdDesc();
         return tagsList;
     }
 

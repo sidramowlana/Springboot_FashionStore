@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("api/cart")
 @RestController
 public class CartController {
@@ -22,10 +23,18 @@ public class CartController {
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping(value = "/add-cart/{productId}")
-    public ResponseEntity<?> addCart(@PathVariable Integer productId,@RequestParam Integer quantity,@RequestParam String size,@RequestParam Double total, HttpServletRequest request) {
-        System.out.println(productId);
+    public ResponseEntity<?> addCart(@PathVariable Integer productId,@RequestParam Integer quantity,
+                                     @RequestParam String size,@RequestParam Double total, HttpServletRequest request) {
+        System.out.println(productId+" "+quantity+" "+size+" "+total);
         return cartService.addNewCartItem(productId,quantity,size,total, request);
     }
+    //rough working
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+//    @PostMapping(value = "/product/add-cart/{productId}")
+//    public ResponseEntity<?> addToCart(@PathVariable Integer productId,@RequestBody Cart cart, HttpServletRequest request) {
+//        System.out.println(productId+" "+cart.getTotal()+" "+cart.getQuantity()+" "+cart.getSize());
+//        return ResponseEntity.ok().body(cart);
+//    }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping(value = "/cartAll")
