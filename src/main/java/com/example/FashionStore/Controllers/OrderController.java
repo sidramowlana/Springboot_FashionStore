@@ -6,6 +6,7 @@ import com.example.FashionStore.Models.Orders;
 import com.example.FashionStore.Response.MessageResponse;
 import com.example.FashionStore.Services.AuthService;
 import com.example.FashionStore.Services.OrdersService;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -58,6 +59,12 @@ public class OrderController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PutMapping(value = "/order-status/{ordersId}/{status}")
+    public ResponseEntity<?> updateOrderStatusByOrderId(@PathVariable Integer ordersId, @PathVariable String status) {
+        return ordersService.updateOrderStatusByOrderId(ordersId, status);
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/cart-orders/{userId}")
     public List<CartOrders> getAllCartOrdersByUserId(@PathVariable Integer userId, HttpServletRequest request) {
         return ordersService.getAllCartOrdersByUserId(userId,request);
@@ -67,5 +74,12 @@ public class OrderController {
     @GetMapping("/all/{status}")
     public List<Orders> getAllPendingOrdersByStatus(@PathVariable String status, HttpServletRequest request) {
         return ordersService.getAllPendingOrdersByStatus(status);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/order/{orderId}")
+    public Orders getAOrderById(@PathVariable Integer orderId)
+    {
+        return ordersService.getAOrderById(orderId);
     }
 }

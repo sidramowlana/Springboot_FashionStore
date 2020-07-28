@@ -94,11 +94,21 @@ public class ProductService {
     public ResponseEntity<?> updateProductByProductId(Integer productId, Product updateProduct) {
         if (productRepository.existsById(productId)) {
             Product product = productRepository.findById(productId).get();
-            product.setProductName(updateProduct.getProductName());
-            product.setShortDescription(updateProduct.getShortDescription());
-            product.setPrice(updateProduct.getPrice());
-            product.setQuantity(updateProduct.getQuantity());
-            productRepository.save(product);
+            if(updateProduct.getScaledImage().equals(null)) {
+                product.setProductName(updateProduct.getProductName());
+                product.setShortDescription(updateProduct.getShortDescription());
+                product.setPrice(updateProduct.getPrice());
+                product.setQuantity(updateProduct.getQuantity());
+                productRepository.save(product);
+            }
+            else{
+                product.setScaledImage(updateProduct.getScaledImage());
+                product.setProductName(updateProduct.getProductName());
+                product.setShortDescription(updateProduct.getShortDescription());
+                product.setPrice(updateProduct.getPrice());
+                product.setQuantity(updateProduct.getQuantity());
+                productRepository.save(product);
+            }
             return ResponseEntity.ok().body(product);
         } else {
             return ResponseEntity.ok().body("Product not available");

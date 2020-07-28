@@ -61,7 +61,7 @@ public class ProductInquiryService {
             productInquiryRepository.save(productInquiry);
             return ResponseEntity.ok().body(new MessageResponse("Successfully Replied to the inquiry"));
         } else {
-            return ResponseEntity.badRequest().body(new MessageResponse("Inquiry is not available Tag Added"));
+            return ResponseEntity.badRequest().body(new MessageResponse("Inquiry is not available"));
         }
     }
 

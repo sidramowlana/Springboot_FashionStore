@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -45,6 +47,11 @@ public class OrdersService {
         return cartList;
     }
 
+    public Orders getAOrderById(Integer orderId) {
+        Orders orders = ordersRepository.findById(orderId).get();
+        return orders;
+    }
+
     public List<CartOrders> getAllCartOrdersByUserId(Integer userId, HttpServletRequest request) {
         List<CartOrders> cartOrdersList = cartOrdersRepository.findByOrdersUserUserId(userId);
         return cartOrdersList;
@@ -80,7 +87,7 @@ public class OrdersService {
     public ResponseEntity<CartOrders> updateOrderStatus(Integer cartOrdersId, CartOrders updateCartOrders) {
         if (cartOrdersRepository.existsById(cartOrdersId)) {
             CartOrders cartOrders = cartOrdersRepository.findById(cartOrdersId).get();
-            Product product = new Product();
+            Product product = cartOrders.getCart().getProduct();
             cartOrders.getOrders().setDate(updateCartOrders.getOrders().getDate());
             cartOrders.getOrders().setStatus(updateCartOrders.getOrders().getStatus());
             product.setQuantity(product.getQuantity() + updateCartOrders.getCart().getQuantity());
@@ -89,5 +96,25 @@ public class OrdersService {
             return ResponseEntity.ok().body(cartOrders);
         }
         return null;
+    }
+
+    public ResponseEntity<?> updateOrderStatusByOrderId(Integer ordersId, String status) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        String date = sdf.format(new Date());
+
+        if (ordersRepository.existsById(ordersId)) {
+            Orders orders = ordersRepository.findById(ordersId).get();
+            orders.setStatus(status);
+            orders.setDate(date);
+            List<CartOrders> cartOrdersList = cartOrdersRepository.findByOrders(orders);
+            for (CartOrders cartOrders : cartOrdersList) {
+                Product product = cartOrders.getCart().getProduct();
+                product.setQuantity(product.getQuantity() + cartOrders.getCart().getQuantity());
+                productRepository.save(product);
+                ordersRepository.save(orders);
+            }
+            return ResponseEntity.ok().body(orders);
+        }
+        return ResponseEntity.ok().body(new MessageResponse("No order id availabel"));
     }
 }
