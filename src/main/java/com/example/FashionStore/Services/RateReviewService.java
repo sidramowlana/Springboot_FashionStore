@@ -46,4 +46,9 @@ public class RateReviewService {
         List<RateReview> rateReviewsList = rateReviewRepository.findByProductProductId(productId);
         return rateReviewsList;
     }
+
+    public RateReview getRateReviewById(Integer rateReviewId){
+        RateReview rateReview = rateReviewRepository.findById(rateReviewId).get();
+        return rateReview;
+    }
 }

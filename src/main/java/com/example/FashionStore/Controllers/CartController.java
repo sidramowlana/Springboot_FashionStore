@@ -2,6 +2,7 @@ package com.example.FashionStore.Controllers;
 
 
 import com.example.FashionStore.Models.Cart;
+import com.example.FashionStore.Response.MessageResponse;
 import com.example.FashionStore.Services.CartService;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
@@ -25,16 +26,8 @@ public class CartController {
     @PostMapping(value = "/add-cart/{productId}")
     public ResponseEntity<?> addCart(@PathVariable Integer productId,@RequestParam Integer quantity,
                                      @RequestParam String size,@RequestParam Double total, HttpServletRequest request) {
-        System.out.println(productId+" "+quantity+" "+size+" "+total);
         return cartService.addNewCartItem(productId,quantity,size,total, request);
     }
-    //rough working
-//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-//    @PostMapping(value = "/product/add-cart/{productId}")
-//    public ResponseEntity<?> addToCart(@PathVariable Integer productId,@RequestBody Cart cart, HttpServletRequest request) {
-//        System.out.println(productId+" "+cart.getTotal()+" "+cart.getQuantity()+" "+cart.getSize());
-//        return ResponseEntity.ok().body(cart);
-//    }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping(value = "/cartAll")
@@ -57,9 +50,13 @@ public class CartController {
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping(value = "/cartAll/{userId}")
     public List<Cart> getAllUserIsPurchaseCartProducts(@PathVariable Integer userId, @RequestParam boolean isPurchased, HttpServletRequest request) {
-        System.out.println("q11: "+userId);
-        System.out.println("q12: "+isPurchased);
         return cartService.getAllPendingCartProducts(userId,isPurchased,request);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @DeleteMapping(value="/delete/{cartId}")
+    public List<Cart> deleteCartId(@PathVariable Integer cartId, HttpServletRequest request){
+        System.out.println(cartId);
+        return cartService.deleteCartIdByCartId(cartId, request);
+    }
 }

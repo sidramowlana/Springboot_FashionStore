@@ -48,6 +48,7 @@ public class TagService {
     public List<Tag> getAllTags() {
 //        List<Tag> tagsList = tagRepository.findAll();
         List<Tag> tagsList = tagRepository.findAllByOrderByTagIdDesc();
+
         return tagsList;
     }
 

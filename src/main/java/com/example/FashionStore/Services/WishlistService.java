@@ -30,7 +30,7 @@ public class WishlistService {
         this.userRepository = userRepository;
     }
 
-    public ResponseEntity<MessageResponse> onWishlistItem(Integer productId, HttpServletRequest request) {
+    public ResponseEntity<?> onWishlistItem(Integer productId, HttpServletRequest request) {
         Product product = productRepository.findById(productId).get();
         System.out.println(product);
         User user = userRepository.findByUsername(request.getUserPrincipal().getName()).get();
@@ -50,7 +50,7 @@ public class WishlistService {
             wishlistRepository.save(wishlist);
             System.out.println("the response entity message: Added to your wishlist");
             System.out.println(ResponseEntity.ok().body("Added to your wishlist"));
-            return ResponseEntity.ok().body(new MessageResponse("Added to your wishlist"));
+            return ResponseEntity.ok().body(wishlist.getProduct());
         }
     }
 

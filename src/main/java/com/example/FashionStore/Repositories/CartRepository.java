@@ -1,9 +1,6 @@
 package com.example.FashionStore.Repositories;
 
-import com.example.FashionStore.Models.Cart;
-import com.example.FashionStore.Models.Orders;
-import com.example.FashionStore.Models.Product;
-import com.example.FashionStore.Models.User;
+import com.example.FashionStore.Models.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -22,4 +19,7 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
     Cart findByProductAndSize(Product product, String size);
 
     List<Cart> findByUserAndIsPurchased(User user, boolean isPurchased);
+    List<Cart> findByUserAndIsPurchasedOrderByCartIdDesc(User user, boolean isPurchased);
+//    List<Cart> findAllByOrderByTagIdDesc();
+
 }

@@ -61,6 +61,19 @@ public class CartService {
         }
     }
 
+    public List<Cart> deleteCartIdByCartId(Integer cartId, HttpServletRequest request) {
+        User user = userRepository.findByUsername(request.getUserPrincipal().getName()).get();
+//    System.out.println(productId + " = " + user.getUserId() + " = " + size);
+        if (cartRepository.existsById(cartId)) {
+            Cart cart = cartRepository.findById(cartId).get();
+            cartRepository.delete(cart);
+            return getAllCartItems(request);
+        } else {
+            System.out.println("not going check this");
+            return null;
+        }
+    }
+
     public ResponseEntity<?> updateCartItem(Integer cartId, int quantity) {
         if (cartRepository.existsById(cartId)) {
             Cart cart = cartRepository.findById(cartId).get();
@@ -75,7 +88,7 @@ public class CartService {
 
     public List<Cart> getAllCartItems(HttpServletRequest request) {
         User user = userRepository.findByUsername(request.getUserPrincipal().getName()).get();
-        List<Cart> cartList = cartRepository.findByUserAndIsPurchased(user, false);
+        List<Cart> cartList = cartRepository.findByUserAndIsPurchasedOrderByCartIdDesc(user, false);
         return cartList;
     }
 

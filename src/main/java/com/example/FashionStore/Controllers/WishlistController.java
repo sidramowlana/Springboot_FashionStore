@@ -1,5 +1,6 @@
 package com.example.FashionStore.Controllers;
 
+import com.example.FashionStore.Models.Product;
 import com.example.FashionStore.Models.Wishlist;
 import com.example.FashionStore.Response.MessageResponse;
 import com.example.FashionStore.Services.WishlistService;
@@ -22,7 +23,7 @@ public class WishlistController {
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping(value = "/add-wishlist/{productId}")
-    public ResponseEntity<MessageResponse> addWishlist(@PathVariable Integer productId, HttpServletRequest request) {
+    public ResponseEntity<?> addWishlist(@PathVariable Integer productId, HttpServletRequest request) {
         System.out.println("add wishlist: " + productId + " = " + request.getUserPrincipal().getName());
         return wishlistService.onWishlistItem(productId, request);
     }
@@ -31,7 +32,7 @@ public class WishlistController {
 //wishlist page displaying all favorutie product of a user
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping(value = "/wishlistAll")
-    public List<Wishlist> getAllWishlistItemByProductId(HttpServletRequest httpServletRequest) {
+    public List<Wishlist> getAllWishlistItemsByUser(HttpServletRequest httpServletRequest) {
         System.out.println("http: " + httpServletRequest.getUserPrincipal().getName());
         return wishlistService.getAllWishlistItemsByUserToken(httpServletRequest);
     }

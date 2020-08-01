@@ -34,4 +34,12 @@ public class RateReviewController {
         System.out.println("lets see: "+productId);
         return rateReviewService.getRateReviewByProductId(productId, request);
     }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @GetMapping("/product/rate/{rateReviewId}")
+    public RateReview getRateReviewById(@PathVariable Integer rateReviewId) {
+        System.out.println("lets see: "+rateReviewId);
+        return rateReviewService.getRateReviewById(rateReviewId);
+    }
+
 }
