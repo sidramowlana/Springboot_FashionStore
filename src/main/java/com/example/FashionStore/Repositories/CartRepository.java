@@ -19,7 +19,7 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
     Cart findByProductAndSize(Product product, String size);
 
     List<Cart> findByUserAndIsPurchased(User user, boolean isPurchased);
+
     List<Cart> findByUserAndIsPurchasedOrderByCartIdDesc(User user, boolean isPurchased);
-//    List<Cart> findAllByOrderByTagIdDesc();
 
 }

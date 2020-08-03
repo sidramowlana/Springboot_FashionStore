@@ -1,40 +1,26 @@
 package com.example.FashionStore.Services;
 
 import com.example.FashionStore.Models.Address;
+import com.example.FashionStore.Models.OTP;
 import com.example.FashionStore.Models.User;
 import com.example.FashionStore.Repositories.AddressRepository;
+import com.example.FashionStore.Repositories.OTPRepository;
 import com.example.FashionStore.Repositories.UserRepository;
-import com.example.FashionStore.Request.AuthRequest;
-import com.example.FashionStore.Response.JwtResponse;
 import com.example.FashionStore.Response.MessageResponse;
-import com.example.FashionStore.Security.Service.UserDetailsImpl;
 import com.example.FashionStore.Security.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
-import java.security.InvalidKeyException;
-import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -52,13 +38,14 @@ public class UserService {
     AuthService authService;
     private AuthenticationManager authenticationManager;
     private JwtUtils jwtUtils;
+    private OTPRepository otpRepository;
 
 
     @Autowired
     public UserService(UserRepository userRepository, RoleService roleService, PasswordEncoder passwordEncoder,
                        JavaMailSender javaMailSender,
                        AddressRepository addressRepository, AuthService authService,
-                       AuthenticationManager authenticationManager, JwtUtils jwtUtils
+                       AuthenticationManager authenticationManager, JwtUtils jwtUtils,OTPRepository otpRepository
     ) {
         this.userRepository = userRepository;
         this.roleService = roleService;
@@ -68,6 +55,7 @@ public class UserService {
         this.authService = authService;
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
+        this.otpRepository = otpRepository;
     }
 
     public ResponseEntity<?> getUserByUserId(Integer userId) {

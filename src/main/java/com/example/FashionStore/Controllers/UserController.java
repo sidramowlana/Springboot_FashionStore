@@ -3,6 +3,7 @@ package com.example.FashionStore.Controllers;
 import com.example.FashionStore.Models.Address;
 import com.example.FashionStore.Models.User;
 import com.example.FashionStore.Response.MessageResponse;
+import com.example.FashionStore.Services.OTPService;
 import com.example.FashionStore.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +19,12 @@ import java.util.List;
 public class UserController {
 
     private UserService userService;
+    private OTPService otpService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, OTPService otpService) {
         this.userService = userService;
+        this.otpService = otpService;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -38,28 +41,21 @@ public class UserController {
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PutMapping(value = "/reset-password/{userId}")
-    public ResponseEntity<MessageResponse> updateUserPasswordByUserId(@PathVariable Integer userId, @RequestBody String  newPassword) {
+    public ResponseEntity<MessageResponse> updateUserPasswordByUserId(@PathVariable Integer userId, @RequestBody String newPassword) {
         return userService.updateUserPasswordByUserId(userId, newPassword);
     }
 
-
-//    @PUT("api/users/reset-password/{userId}")
-//    Call<User> updateUserPassword(@Path("userId") Integer userId, @Body String newPassword, @Header("Authorization") String token);
-
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("user/address/{userId}")
-    public Address getUserAddressByUserId(@PathVariable Integer userId)
-    {
+    public Address getUserAddressByUserId(@PathVariable Integer userId) {
         return userService.getUserAddressByUserId(userId);
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping("user/add-address")
-    public ResponseEntity<?> addUserAddressByUserId(@RequestBody Address newAddress, HttpServletRequest request)
-    {
-        return userService.addUserAddressByUserId(newAddress,request);
+    public ResponseEntity<?> addUserAddressByUserId(@RequestBody Address newAddress, HttpServletRequest request) {
+        return userService.addUserAddressByUserId(newAddress, request);
     }
-
 
 
 }

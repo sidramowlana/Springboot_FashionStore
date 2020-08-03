@@ -36,8 +36,8 @@ public class TagController {
         return tagService.addNewTag(newTag);
     }
     //check if the user also needs this
-    @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value = "/admin/all")
+    @PreAuthorize("hasRole('ADMIN')or hasRole('USER')")
+    @RequestMapping(value = "/all")
     public List<Tag> getAllTags(){
         return tagService.getAllTags();
     }

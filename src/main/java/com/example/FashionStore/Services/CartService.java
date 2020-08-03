@@ -99,20 +99,6 @@ public class CartService {
         return pendingCartList;
     }
 
-//    public Cart getCartByCartId(Integer cartId) {
-//        Cart cart = cartRepository.findById(cartId).get();
-//        return cart;
-//    }
-//    public ResponseEntity<?> getCartItemByProductName(String productName) {
-//        if (!cartRepository.existsByProduct(productName)) {
-//            return ResponseEntity.ok().body(new MessageResponse("Tag not available!!!"));
-//        } else {
-//            Cart cart = cartRepository.findByProduct(productName);
-//            return ResponseEntity.ok().body(cart);
-//        }
-//    }
-
-    // get equipment by id
     public ResponseEntity<?> getCartItemProductById(Integer id) {
         if (!cartRepository.existsById(id)) {
             return ResponseEntity.ok().body(new MessageResponse("Product not available!!!"));
