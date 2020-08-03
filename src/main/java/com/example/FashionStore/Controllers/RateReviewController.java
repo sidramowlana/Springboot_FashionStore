@@ -28,14 +28,14 @@ public class RateReviewController {
         return rateReviewService.onAddRateReviewByProductId(productId, newRateReview, request);
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/product-all/{productId}")
     public List<RateReview> getRateReviewByProductId(@PathVariable Integer productId, HttpServletRequest request) {
         System.out.println("lets see: "+productId);
         return rateReviewService.getRateReviewByProductId(productId, request);
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/product/rate/{rateReviewId}")
     public RateReview getRateReviewById(@PathVariable Integer rateReviewId) {
         System.out.println("lets see: "+rateReviewId);

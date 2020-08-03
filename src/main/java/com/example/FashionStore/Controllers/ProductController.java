@@ -48,7 +48,7 @@ public class ProductController {
         return productService.updateProductByProductId(productId, updateProduct);
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @RequestMapping(value = "/category/product-all/{category}")
     public List<Product> getProductsByTagId(@PathVariable String category, HttpServletRequest request){
         return productService.getAllProductByTagName(category);

@@ -56,7 +56,7 @@ public class WishlistService {
 
     public List<Wishlist> getAllWishlistItemsByUserToken(HttpServletRequest request) {
         User user = userRepository.findByUsername(request.getUserPrincipal().getName()).get();
-        List<Wishlist> wishlist = wishlistRepository.findByUser(user);
+        List<Wishlist> wishlist = wishlistRepository.findByUserOrderByWishlistIdDesc(user);
         return wishlist;
     }
 

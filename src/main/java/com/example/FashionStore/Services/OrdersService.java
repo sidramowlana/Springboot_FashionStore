@@ -32,7 +32,7 @@ public class OrdersService {
 
     public List<Orders> getAllUserOrders(Integer userId, String status, HttpServletRequest request) {
         User user = userRepository.findById(userId).get();
-        List<Orders> ordersList = ordersRepository.findByUserAndStatusOrderByOrderIdDesc(user, status);
+        List<Orders> ordersList = ordersRepository.findByUserAndStatusOrderByOrdersIdDesc(user, status);
         return ordersList;
     }
 
@@ -53,7 +53,7 @@ public class OrdersService {
     }
 
     public List<CartOrders> getAllCartOrdersByUserId(Integer userId, HttpServletRequest request) {
-        List<CartOrders> cartOrdersList = cartOrdersRepository.findByOrdersUserUserIdOrderByCartIdDesc(userId);
+        List<CartOrders> cartOrdersList = cartOrdersRepository.findByOrdersUserUserIdOrderByCardOrderId(userId);
         return cartOrdersList;
     }
 
