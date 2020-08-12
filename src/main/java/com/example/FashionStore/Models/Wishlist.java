@@ -23,5 +23,4 @@ public class Wishlist {
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "product", referencedColumnName = "productId")
     private Product product;
-//    private boolean isFavourite;
 }

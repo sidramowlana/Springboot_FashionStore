@@ -29,13 +29,6 @@ public class Product {
     @Transient
     String[] catergoryArray;
 
-
-//    @JsonIgnore
-//    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-//    @JoinColumn(name = "product", referencedColumnName = "productId")
-//    private List<ProductTag> productTag;
-
-
     public Product(String productName, String shortDescription, String category, double price, int quantity, String scaledImage) {
         this.productName = productName;
         this.shortDescription = shortDescription;

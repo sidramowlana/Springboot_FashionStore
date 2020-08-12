@@ -1,9 +1,6 @@
 package com.example.FashionStore.Services;
 
-import com.example.FashionStore.Models.Address;
-import com.example.FashionStore.Models.OTP;
 import com.example.FashionStore.Models.User;
-import com.example.FashionStore.Repositories.AddressRepository;
 import com.example.FashionStore.Repositories.OTPRepository;
 import com.example.FashionStore.Repositories.UserRepository;
 import com.example.FashionStore.Response.MessageResponse;
@@ -11,14 +8,12 @@ import com.example.FashionStore.Security.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +22,6 @@ public class UserService {
 
     private UserRepository userRepository;
     private RoleService roleService;
-    private AddressRepository addressRepository;
     private PasswordEncoder passwordEncoder;
     private JavaMailSender javaMailSender;
     @Value("${fashionStore.app.jwtSecret}")
@@ -44,14 +38,14 @@ public class UserService {
     @Autowired
     public UserService(UserRepository userRepository, RoleService roleService, PasswordEncoder passwordEncoder,
                        JavaMailSender javaMailSender,
-                       AddressRepository addressRepository, AuthService authService,
-                       AuthenticationManager authenticationManager, JwtUtils jwtUtils,OTPRepository otpRepository
+                       AuthService authService,
+                       AuthenticationManager authenticationManager,
+                       JwtUtils jwtUtils, OTPRepository otpRepository
     ) {
         this.userRepository = userRepository;
         this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
         this.javaMailSender = javaMailSender;
-        this.addressRepository = addressRepository;
         this.authService = authService;
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
@@ -92,30 +86,6 @@ public class UserService {
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
-    }
-
-    public ResponseEntity<?> addUserAddressByUserId(Address newAddress, HttpServletRequest request) {
-        User user = userRepository.findByUsername(request.getUserPrincipal().getName()).get();
-        if (addressRepository.existsByAddressAndCityAndUserUserId(newAddress.getAddress(), newAddress.getCity(), user.getUserId())) {
-            Address address = addressRepository.findByAddressAndCityAndUserUserId(newAddress.getAddress(), newAddress.getCity(), user.getUserId());
-            addressRepository.delete(address);
-            return ResponseEntity.ok().body("removed");
-        } else {
-            Address address = new Address();
-            address.setAddress(newAddress.getAddress());
-            address.setPostalCode(newAddress.getPostalCode());
-            address.setCity(newAddress.getCity());
-            address.setUser(user);
-            addressRepository.save(address);
-            return ResponseEntity.ok().body("Successfully added");
-        }
-
-    }
-
-    public Address getUserAddressByUserId(Integer userId) {
-        Address address = addressRepository.findByUserUserId(userId);
-        System.out.println(address.getAddress());
-        return address;
     }
 
 }

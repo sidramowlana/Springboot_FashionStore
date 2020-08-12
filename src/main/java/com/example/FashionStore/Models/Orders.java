@@ -24,10 +24,4 @@ public class Orders {
     @JoinColumn(name = "user", referencedColumnName = "userId")
     private User user;
     private double total;
-
-//    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-//    @JoinColumn(name = "orders", referencedColumnName = "ordersId")
-//    private List<CartOrders> cartOrdersList;
-
 }
-
