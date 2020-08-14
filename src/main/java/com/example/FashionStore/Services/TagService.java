@@ -2,11 +2,9 @@ package com.example.FashionStore.Services;
 
 import com.example.FashionStore.Models.ProductTag;
 import com.example.FashionStore.Models.Tag;
-import com.example.FashionStore.Repositories.ProductRepository;
 import com.example.FashionStore.Repositories.ProductTagRepository;
 import com.example.FashionStore.Repositories.TagRepository;
 import com.example.FashionStore.Response.MessageResponse;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +14,10 @@ import java.util.List;
 public class TagService {
 
     private TagRepository tagRepository;
-    private ProductRepository productRepository;
     private ProductTagRepository productTagRepository;
 
-    public TagService(TagRepository tagRepository, ProductRepository productRepository, ProductTagRepository productTagRepository) {
+    public TagService(TagRepository tagRepository, ProductTagRepository productTagRepository) {
         this.tagRepository = tagRepository;
-        this.productRepository = productRepository;
         this.productTagRepository = productTagRepository;
     }
 
@@ -38,10 +34,18 @@ public class TagService {
     }
 
     //delete a tag
-    public void deleteTag(Integer id) {
+    public ResponseEntity<?> deleteTag(Integer id) {
         if (tagRepository.existsById(id)) {
-            tagRepository.deleteById(id);
+            if(!productTagRepository.existsByTagTagId(id)) {
+                tagRepository.deleteById(id);
+                return ResponseEntity.ok().body(new MessageResponse("Successfully category deleted"));
+            }
+            else
+            {
+                return ResponseEntity.badRequest().body(new MessageResponse("Cannot delete category"));
+            }
         }
+        return ResponseEntity.badRequest().body(new MessageResponse("No category found"));
     }
 
     //get all tags
@@ -56,6 +60,7 @@ public class TagService {
         List<ProductTag> list = productTagRepository.findAll();
         return list;
     }
+
     public List<ProductTag> getAllProductsByTagId(Integer tagId){
         List<ProductTag> list = productTagRepository.findByTagTagId(tagId);
         System.out.println(list);

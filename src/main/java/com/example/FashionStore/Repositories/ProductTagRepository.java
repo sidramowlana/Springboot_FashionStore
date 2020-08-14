@@ -10,4 +10,5 @@ import java.util.List;
 public interface ProductTagRepository extends JpaRepository<ProductTag, Integer> {
 
     List<ProductTag> findByTagTagId(Integer tagId);
+    boolean existsByTagTagId(Integer id);
 }

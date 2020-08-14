@@ -13,20 +13,16 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class OTPController {
 
-    private UserService userService;
     private OTPService otpService;
 
     @Autowired
-    public OTPController(UserService userService, OTPService otpService) {
-        this.userService = userService;
+    public OTPController(OTPService otpService) {
         this.otpService = otpService;
     }
-
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping(value = "/request-password-change/{userId}")
     public ResponseEntity<MessageResponse> generateOPTSendEmail(@PathVariable Integer userId, @RequestParam String email) {
-        System.out.println(email);
         return otpService.generateOPTSendEmail(userId, email);
     }
 

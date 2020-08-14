@@ -25,11 +25,4 @@ public class RoleService {
         return roleRepository.findByRole(roleName);
     }
 
-    public Role getByRoleId(Integer roleId) {
-        return roleRepository.findById(roleId).get();
-    }
-
-    public List<Role> getAllRoles() {
-        return roleRepository.findAll();
-    }
 }

@@ -52,6 +52,7 @@ public class OrderController {
         return ordersService.getAllCartByOrderId(ordersId);
     }
 
+    //chec in android if not delete
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PutMapping(value = "/order-update/{cartOrdersId}")
     public ResponseEntity<CartOrders> updateOrderStatus(@PathVariable Integer cartOrdersId, @RequestBody CartOrders updateCartOrders, HttpServletRequest request) {
@@ -76,7 +77,7 @@ public class OrderController {
         return ordersService.getAllPendingOrdersByStatus(status);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/order/{orderId}")
     public Orders getAOrderById(@PathVariable Integer orderId)
     {

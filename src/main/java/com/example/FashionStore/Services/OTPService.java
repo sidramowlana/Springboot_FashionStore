@@ -33,7 +33,6 @@ public class OTPService {
         this.passwordEncoder=passwordEncoder;
     }
 
-
     public ResponseEntity<MessageResponse> generateOPTSendEmail(Integer userId, String email) {
         if (otpRepository.existsByUserUserId(userId)) {
             OTP otp = otpRepository.findByUserUserId(userId);
@@ -42,7 +41,7 @@ public class OTPService {
             otp.setUser(otp.getUser());
             otp.setExpiryDate(1);
             otpRepository.save(otp);
-            sendEmail(otp);
+            sendEmail(otp,email);
             return ResponseEntity.ok().body(new MessageResponse("Success: Email has been sent to you!"));
         } else {
             User user = userRepository.findById(userId).get();
@@ -52,15 +51,16 @@ public class OTPService {
             otp.setUser(user);
             otp.setExpiryDate(1);
             otpRepository.save(otp);
-            sendEmail(otp);
+            sendEmail(otp,email);
             return ResponseEntity.ok().body(new MessageResponse("Success: Email has been sent to you!"));
         }
 
     }
-    public void sendEmail(OTP otp){
+
+    public void sendEmail(OTP otp,String email){
         //send an email with the token to that user
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setTo(otp.getUser().getEmail());
+        simpleMailMessage.setTo(email);
         simpleMailMessage.setSubject("Password Reset Request");
         simpleMailMessage.setText("To reset your password, type the given OTP =" + otp.getOtpNumber());
         javaMailSender.send(simpleMailMessage);

@@ -19,14 +19,10 @@ import java.util.List;
 public class TagController {
 
     private TagService tagService;
-    private TagRepository tagRepository;
-    private ProductTagRepository productTagRepository;
 
     @Autowired
-    public TagController(TagService tagService, TagRepository tagRepository,ProductTagRepository productTagRepository) {
+    public TagController(TagService tagService) {
         this.tagService = tagService;
-        this.tagRepository = tagRepository;
-        this.productTagRepository = productTagRepository;
     }
 
 
@@ -36,7 +32,7 @@ public class TagController {
         return tagService.addNewTag(newTag);
     }
     //check if the user also needs this
-    @PreAuthorize("hasRole('ADMIN')or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @RequestMapping(value = "/all")
     public List<Tag> getAllTags(){
         return tagService.getAllTags();
@@ -57,7 +53,7 @@ public class TagController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(value = "/delete/{tagId}")
-    public void deleteTagById(@PathVariable Integer tagId){
-        tagService.deleteTag(tagId);
+    public ResponseEntity<?> deleteTagById(@PathVariable Integer tagId){
+       return tagService.deleteTag(tagId);
     }
 }

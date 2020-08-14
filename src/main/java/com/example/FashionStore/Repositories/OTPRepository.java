@@ -1,8 +1,6 @@
 package com.example.FashionStore.Repositories;
 
 import com.example.FashionStore.Models.OTP;
-import com.example.FashionStore.Models.Orders;
-import com.example.FashionStore.Models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

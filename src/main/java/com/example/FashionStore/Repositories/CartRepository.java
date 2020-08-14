@@ -12,11 +12,11 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
 
     Cart findByProductProductIdAndSizeAndUserUserId(Integer productId, String size, Integer userId);
 
-    boolean existsByProductAndSizeAndIsPurchased(Product product, String size, boolean isPurchased);
+    boolean existsByUserAndProductAndSizeAndIsPurchased(User user,Product product, String size, boolean isPurchased);
 
     boolean existsByProductProductIdAndSizeAndUserUserId(Integer productId, String size, Integer userId);
 
-    Cart findByProductAndSize(Product product, String size);
+    Cart findByUserAndProductAndSize(User user,Product product, String size);
 
     List<Cart> findByUserAndIsPurchased(User user, boolean isPurchased);
 

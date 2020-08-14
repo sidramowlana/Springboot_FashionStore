@@ -13,11 +13,5 @@ import java.util.List;
 public interface CartOrdersRepository extends JpaRepository<CartOrders, Integer> {
     List<CartOrders> findByOrders(Orders orders);
 
-    List<CartOrders> findByOrdersUserUserId(Integer userId);
     List<CartOrders> findByOrdersUserUserIdOrderByCardOrderId(Integer userId);
-//    findByLastnameOrderByFirstnameDesc(String lastName)
-
-//    OrderByCartOrdersCardOrderIdDesc(Integer userId);
-//    List<CartOrders> findByOrdersUserUserIdOrderByCartIdDesc(Integer userId);
-
 }

@@ -25,7 +25,6 @@ public class Product {
     private int quantity;
     private String scaledImage;
 
-//    @JsonIgnore
     @Transient
     String[] catergoryArray;
 

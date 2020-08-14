@@ -39,7 +39,7 @@ public class RateReviewService {
             rateReviewRepository.save(rateReview);
             return ResponseEntity.ok().body(new MessageResponse("Thank you for your feedback"));
         } else {
-            return ResponseEntity.ok().body(new MessageResponse("Product Not Available"));
+            return ResponseEntity.badRequest().body(new MessageResponse("Product Not Available"));
         }
     }
     public List<RateReview> getRateReviewByProductId(Integer productId, HttpServletRequest request){

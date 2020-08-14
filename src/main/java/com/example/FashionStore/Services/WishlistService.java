@@ -7,7 +7,6 @@ import com.example.FashionStore.Models.Wishlist;
 import com.example.FashionStore.Repositories.ProductRepository;
 import com.example.FashionStore.Repositories.UserRepository;
 import com.example.FashionStore.Repositories.WishlistRepository;
-import com.example.FashionStore.Request.AuthRequest;
 import com.example.FashionStore.Response.MessageResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -71,6 +70,4 @@ public class WishlistService {
             return ResponseEntity.ok().body("");
         }
     }
-
-
 }

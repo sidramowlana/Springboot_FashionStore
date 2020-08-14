@@ -21,11 +21,4 @@ public class RoleController {
     public RoleController(RoleService roleService){
         this.roleService = roleService;
     }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping
-    public ResponseEntity<?> createRole(@RequestBody Role role) {
-        Role persistedRole = roleService.createRole(role);
-        return new ResponseEntity<>(persistedRole, HttpStatus.CREATED);
-    }
 }

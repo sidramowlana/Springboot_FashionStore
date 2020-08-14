@@ -17,12 +17,10 @@ import java.util.List;
 public class UserController {
 
     private UserService userService;
-    private OTPService otpService;
 
     @Autowired
-    public UserController(UserService userService, OTPService otpService) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.otpService = otpService;
     }
 
     @PreAuthorize("hasRole('ADMIN')")

@@ -24,16 +24,13 @@ public class WishlistController {
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping(value = "/add-wishlist/{productId}")
     public ResponseEntity<?> addWishlist(@PathVariable Integer productId, HttpServletRequest request) {
-        System.out.println("add wishlist: " + productId + " = " + request.getUserPrincipal().getName());
         return wishlistService.onWishlistItem(productId, request);
     }
-
 
 //wishlist page displaying all favorutie product of a user
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping(value = "/wishlistAll")
     public List<Wishlist> getAllWishlistItemsByUser(HttpServletRequest httpServletRequest) {
-        System.out.println("http: " + httpServletRequest.getUserPrincipal().getName());
         return wishlistService.getAllWishlistItemsByUserToken(httpServletRequest);
     }
 

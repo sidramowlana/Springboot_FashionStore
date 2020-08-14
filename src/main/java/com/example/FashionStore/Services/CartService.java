@@ -2,12 +2,12 @@ package com.example.FashionStore.Services;
 
 import com.example.FashionStore.Models.Cart;
 import com.example.FashionStore.Models.Product;
-import com.example.FashionStore.Models.Tag;
 import com.example.FashionStore.Models.User;
 import com.example.FashionStore.Repositories.CartRepository;
 import com.example.FashionStore.Repositories.ProductRepository;
 import com.example.FashionStore.Repositories.UserRepository;
 import com.example.FashionStore.Response.MessageResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +20,7 @@ public class CartService {
     private UserRepository userRepository;
     private ProductRepository productRepository;
 
+    @Autowired
     public CartService(CartRepository cartRepository, UserRepository userRepository, ProductRepository productRepository) {
         this.cartRepository = cartRepository;
         this.userRepository = userRepository;
@@ -29,8 +30,9 @@ public class CartService {
     public ResponseEntity<?> addNewCartItem(Integer productId, Integer quantity, String size, Double total, HttpServletRequest request) {
         User user = userRepository.findByUsername(request.getUserPrincipal().getName()).get();
         Product product = productRepository.findById(productId).get();
-        if (cartRepository.existsByProductAndSizeAndIsPurchased(product, size, false)) {
-            Cart cart = cartRepository.findByProductAndSize(product, size);
+        if (cartRepository.existsByUserAndProductAndSizeAndIsPurchased(user,product, size, false)) {
+            System.out.println(cartRepository.findByUserAndProductAndSize(user,product, size));
+            Cart cart = cartRepository.findByUserAndProductAndSize(user,product, size);
             cart.setQuantity(cart.getQuantity() + quantity);
             cart.setTotal(total);
             cartRepository.save(cart);
@@ -99,12 +101,4 @@ public class CartService {
         return pendingCartList;
     }
 
-    public ResponseEntity<?> getCartItemProductById(Integer id) {
-        if (!cartRepository.existsById(id)) {
-            return ResponseEntity.ok().body(new MessageResponse("Product not available!!!"));
-        } else {
-            Cart cart = cartRepository.findById(id).get();
-            return ResponseEntity.ok().body(cart);
-        }
-    }
 }

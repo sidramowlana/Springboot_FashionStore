@@ -12,7 +12,6 @@ import java.util.List;
 @Repository
 public interface WishlistRepository extends JpaRepository<Wishlist, Integer> {
 
-    List<Wishlist> findByUser(User user);
     List<Wishlist> findByUserOrderByWishlistIdDesc(User user);
 
     Wishlist findByProduct(Product product);
@@ -20,8 +19,6 @@ public interface WishlistRepository extends JpaRepository<Wishlist, Integer> {
     boolean existsByUser(User user);
 
     boolean existsByProduct(Product product);
-
-    List<Wishlist> findByUserUserId(Integer userId);
 
     Wishlist findByProductAndUser(Product product, User user);
 }

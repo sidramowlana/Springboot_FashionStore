@@ -71,16 +71,6 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    //get a Product by name
-    public ResponseEntity<?> getProductByName(String productName) {
-        if (!productRepository.existsByProductName(productName)) {
-            return ResponseEntity.ok().body(new MessageResponse("Product not available!!!"));
-        } else {
-            Product product = productRepository.findByProductName(productName);
-            return ResponseEntity.ok().body(product);
-        }
-    }
-
     // get product by id
     public ResponseEntity<?> getProductById(Integer id) {
         if (!productRepository.existsById(id)) {

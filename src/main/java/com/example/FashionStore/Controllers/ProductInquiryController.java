@@ -49,8 +49,7 @@ public class ProductInquiryController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/product-answer/{productInquiryId}")
-    public ResponseEntity<MessageResponse> onAddAnswerByProductInquiryId(@PathVariable Integer productInquiryId,
-                                                                         @RequestBody ProductInquiry productInquiry, HttpServletRequest request) {
+    public ResponseEntity<MessageResponse> onAddAnswerByProductInquiryId(@PathVariable Integer productInquiryId,@RequestBody ProductInquiry productInquiry, HttpServletRequest request) {
         return productInquiryService.onAddAnswerByProductInquiryId(productInquiryId,productInquiry);
     }
 

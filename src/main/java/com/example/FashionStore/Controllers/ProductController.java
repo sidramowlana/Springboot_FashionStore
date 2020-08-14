@@ -2,7 +2,6 @@ package com.example.FashionStore.Controllers;
 
 import com.example.FashionStore.Models.Cart;
 import com.example.FashionStore.Models.Product;
-import com.example.FashionStore.Repositories.ProductRepository;
 import com.example.FashionStore.Response.MessageResponse;
 import com.example.FashionStore.Services.ProductService;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +14,8 @@ import java.util.List;
 @RequestMapping("api/products")
 @RestController
 public class ProductController {
-    private ProductRepository productRepository;
     private ProductService productService;
-
-    public ProductController(ProductRepository productRepository, ProductService productService) {
-        this.productRepository = productRepository;
+    public ProductController(ProductService productService) {
         this.productService = productService;
     }
 

@@ -1,6 +1,10 @@
 package com.example.FashionStore.Services;
 
-import com.example.FashionStore.Models.*;
+import com.example.FashionStore.Models.CartOrders;
+import com.example.FashionStore.Models.Cart;
+import com.example.FashionStore.Models.Orders;
+import com.example.FashionStore.Models.Product;
+import com.example.FashionStore.Models.User;
 import com.example.FashionStore.Repositories.*;
 import com.example.FashionStore.Response.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +22,6 @@ public class OrdersService {
     private UserRepository userRepository;
     private ProductRepository productRepository;
     private CartRepository cartRepository;
-
     private CartOrdersRepository cartOrdersRepository;
 
     @Autowired

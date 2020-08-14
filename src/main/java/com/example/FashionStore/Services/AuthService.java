@@ -34,7 +34,7 @@ public class AuthService {
 
 
     @Autowired
-    public AuthService(RoleService roleService, UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JwtUtils jwtUtils) {
+        public AuthService(RoleService roleService, UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JwtUtils jwtUtils) {
         this.roleService = roleService;
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
@@ -72,7 +72,6 @@ public class AuthService {
             System.out.println("User name "+authRequest.getUsername()+" doesn't exist");
             return ResponseEntity.ok("User name doesn't exist");
         }
-        System.out.println("ddddddddddddddddddddd");
         System.out.println(authRequest.getUsername());
         System.out.println(authRequest.getPassword());
         Authentication authentication = authenticationManager.authenticate(

@@ -31,11 +31,4 @@ public class User {
         this.phone = phone;
         this.password = password;
     }
-//    public User(String username, String email, String address, String phone, String password) {
-//        this.username = username;
-//        this.email = email;
-//        this.address = address;
-//        this.phone = phone;
-//        this.password = password;
-//    }
 }
