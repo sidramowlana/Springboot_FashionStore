@@ -12,4 +12,6 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer> {
     List<Orders> findByUserAndStatusOrderByOrdersIdDesc(User user, String status);
 
     List<Orders> findByStatus(String status);
+
+    List<Orders> findByUserUserId(int id);
 }

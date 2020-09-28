@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Table(name = "orders")
 @Entity
@@ -24,4 +23,11 @@ public class Orders {
     @JoinColumn(name = "user", referencedColumnName = "userId")
     private User user;
     private double total;
+
+    public Orders(String date, String status, User user, double total) {
+        this.date = date;
+        this.status = status;
+        this.user = user;
+        this.total = total;
+    }
 }

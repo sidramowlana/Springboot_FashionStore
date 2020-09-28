@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Table(name = "cart")
 @Entity
@@ -30,4 +29,13 @@ public class Cart {
     private String size;
     private double total;
     private boolean isPurchased;
+
+    public Cart(User user, Product product, int quantity, String size, double total, boolean isPurchased) {
+        this.user = user;
+        this.product = product;
+        this.quantity = quantity;
+        this.size = size;
+        this.total = total;
+        this.isPurchased = isPurchased;
+    }
 }

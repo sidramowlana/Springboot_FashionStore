@@ -1,0 +1,19 @@
+.btn-container {
+    padding: 5px;
+}
+
+li {
+    display: flex !important;
+    align-items: center;
+}
+
+.item-details {
+    display: flex;
+    align-items: flex-end;
+    flex: 1;
+}
+
+.badge {
+    padding: 5px 20px;
+    margin-left: 10px;
+}

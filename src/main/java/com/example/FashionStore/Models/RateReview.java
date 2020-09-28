@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
 
 
 @Entity
@@ -27,4 +26,12 @@ public class RateReview {
     private int rate = 0;
     private String feedback;
     private String date;
+
+    public RateReview(User user, Product product, int rate, String feedback, String date) {
+        this.user = user;
+        this.product = product;
+        this.rate = rate;
+        this.feedback = feedback;
+        this.date = date;
+    }
 }

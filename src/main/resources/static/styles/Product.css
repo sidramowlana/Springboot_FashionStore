@@ -1,0 +1,25 @@
+.page-header {
+    margin-top: 30px;
+    padding: 20px;
+}
+
+.product-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.details-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.product-form {
+}
+
+.actual-container {
+    display: flex;
+    width: 100%;
+    max-width: 1300px;
+}
